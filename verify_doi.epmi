@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<epm xmlns='http://eprints.org/ep2/data/2.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' id='http://eprints-devel.localdomain:8080/id/epm/verify_doi' uuid='urn:uuid:84335256-2714-5960-a71e-d97930c997ff'>
+  <epmid>verify_doi</epmid>
+  <uri>http://eprints-devel.localdomain:8080/id/epm/verify_doi</uri>
+  <documents>
+    <document>
+      <files>
+        <file>
+          <filename>epm/verify_doi/cgi/users/lookup/verify_doi</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>9b4ed06bfc94f1e682892615bea2fdd5</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>958</filesize>
+        </file>
+        <file>
+          <filename>static/javascript/auto/87_component_doi.js</filename>
+          <mime_type>text/plain</mime_type>
+          <hash>d667ffab12360b113fd8be5499d17d7d</hash>
+          <hash_type>MD5</hash_type>
+          <filesize>1511</filesize>
+        </file>
+      </files>
+      <mime_type>text/plain</mime_type>
+      <format>text</format>
+      <main>static/javascript/auto/87_component_doi.js</main>
+      <content>install</content>
+    </document>
+  </documents>
+  <version>1.0.0</version>
+  <creators>
+    <item>
+      <name>
+        <family>Brody</family>
+        <given>Tim</given>
+      </name>
+      <id>tdb2@ecs.soton.ac.uk</id>
+    </item>
+  </creators>
+  <title>Verify a DOI as existing (CrossRef only)</title>
+  <description>Adds a Javascript behaviour to &apos;id_number&apos; (or other field) that will dynamically query CrossRef to determine if the entered DOI is valid.</description>
+  <requirements>Drop the following into your workflow (at the end of the stage):
+    &lt;component type=&quot;XHTML&quot; surround=&quot;None&quot;&gt;
+        &lt;script&gt;
+            $$(&apos;.ep_eprint_id_number&apos;).each(function(input) {
+                new Component_DOI(input);
+            });
+        &lt;/script&gt;
+    &lt;/component&gt;
+</requirements>
+</epm>

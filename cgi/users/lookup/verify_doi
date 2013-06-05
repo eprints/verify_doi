@@ -1,0 +1,62 @@
+#!/usr/bin/perl
+
+use EPrints;
+use JSON;
+
+my $repo = EPrints->new->current_repository;
+
+my $doi = $repo->param('doi');
+
+open(my $fh, "<", \$doi);
+
+my $epdata;
+my @messages;
+
+my $handler = EPrints::CLIProcessor->new(
+	epdata_to_dataobj => sub {
+		$epdata = shift;
+		return;
+	},
+	message => sub {
+		push @messages, [@_];
+	},
+);
+
+my $dataset = $repo->dataset('inbox');
+
+my $plugin = $repo->plugin('Import::DOI',
+	Handler => $handler,
+);
+
+$plugin->input_fh(
+	dataset => $dataset,
+	fh => $fh,
+);
+
+my %data;
+
+if (@messages)
+{
+	for(@messages)
+	{
+		$_ = {
+			code => $_->[0],
+			message => $repo->xhtml->to_xhtml($_->[1]),
+		};
+	}
+	$data{error} = \@messages;
+}
+else
+{
+	$epdata->{eprint_status} = 'inbox';
+	my $dataobj = $dataset->make_dataobj($epdata);
+
+	$data{ok} = 1;
+	$data{citation} = $dataobj->render_citation->toString;
+}
+
+binmode(STDOUT, ":utf8");
+$repo->send_http_header(
+	content_type => 'application/json',
+);
+print JSON->new->utf8->pretty->encode(\%data);
